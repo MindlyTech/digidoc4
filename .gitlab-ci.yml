@@ -6,6 +6,7 @@ rspec:
     image: ruby:2.6.3
     script:
         - apt-get update -qq && apt-get install -y
+        - gem install bundler:2.1.4 
         - bundle install
         - bundle exec rake spec
     retry: 1
