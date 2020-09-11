@@ -35,6 +35,7 @@ PLATFORMS
 
 DEPENDENCIES
   digidoc4!
+  httparty
   rake (~> 12.0)
   rspec (~> 3.0)
 
