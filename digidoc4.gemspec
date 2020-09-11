@@ -2,7 +2,7 @@ require_relative 'lib/digidoc4/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'digidoc4'
-  spec.version       = Digidoc4::VERSION
+  spec.version       = DigiDoc4::VERSION
   spec.author        = %w[Mindly]
   spec.homepage      = 'https://git.mindly.dev/plusplus/digidoc4'
 
