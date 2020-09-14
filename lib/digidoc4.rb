@@ -3,6 +3,7 @@
 require 'digidoc4/version'
 require 'digidoc4/digi_doc'
 require 'digidoc4/mobile_id'
+require 'digidoc4/smart_id'
 
 require 'httparty'
 require 'json'
