@@ -52,7 +52,7 @@ module DigiDoc4
     # Use this method to sing in with user
     def authenticate
       res = HTTParty.post(
-        url,
+        authenticate_url,
         body: body,
         headers: { 'Content-Type' => 'application/json' }
       )
