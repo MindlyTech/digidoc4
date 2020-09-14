@@ -28,5 +28,85 @@ module DigiDoc4
 
       raise ArgumentError, "Missing input variable(s): [\"#{rv.join('", "')}\"]" unless rv.empty?
     end
+
+    ##
+    # This sets the hash and hash type of the data that will be signed
+    def set_hash(hash, hash_type = 'SHA256')
+      @hash = hash
+      @hash_type = hash_type
+    end
+
+    ##
+    # This returns hash and hash_type inside the hash
+    def hash
+      { hash: @hash, hashType: @hash_type }
+    end
+
+    ##
+    # This retuns relying_party_uuid and relying_party_name inside a hash
+    def relying_party
+      { relyingPartyName: @relying_party_name, relyingPartyUUID: @relying_party_uuid }
+    end
+
+    ##
+    # Use this method to sing in with user
+    def authenticate
+      res = HTTParty.post(
+        authenticate_url,
+        body: body,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+
+      check_for_error(res)
+
+      JSON.parse(res.body)
+    end
+
+    ##
+    # Use this method to get cert
+    def cert
+      @cert || get_cert
+    end
+
+    ##
+    # use this method to start the process of file signing
+    def sign
+      res = HTTParty.post(
+        sign_url,
+        body: body,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+
+      check_for_error(res)
+
+      JSON.parse(res.body)
+    end
+
+    ##
+    # use this method to get the status of the session
+    #   params:
+    #     session_id  - Session you want to get status of
+    #     type        - ENUM[signature authentication], type of the session
+    #
+    def get_status(session_id, type)
+      raise ArgumentError, "Type: \"#{type}\" is invalid" unless %w[signature authentication].include? type.downcase
+
+      url = status_url(session_id, type)
+      res = HTTParty.get(url)
+
+      res = HTTParty.get(url) while JSON.parse(res.body)[:state] == 'RUNNING'
+
+      check_for_error(res)
+
+      JSON.parse(res.body)
+    end
+
+    private
+
+    ##
+    # Use it to check if http response is error
+    def check_for_error(res)
+      raise ValidationError.new(JSON.parse(res.body)), "Authentication failed with status code \"#{res.code}\"" if res.code != 200
+    end
   end
 end
