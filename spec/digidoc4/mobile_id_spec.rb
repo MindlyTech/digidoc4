@@ -51,6 +51,23 @@ RSpec.describe DigiDoc4::MobileID do
     end
   end
 
+  describe '#verification_code' do
+    context 'When hash is not set' do
+      it { expect { valid_mobile_id.verification_code }.to raise_error(ArgumentError) }
+    end
+
+    context 'When hash is set' do
+      it 'returns four digit integer' do
+        valid_mobile_id.set_hash(SecureRandom.hex(32))
+
+        vc = valid_mobile_id.verification_code
+
+        expect(vc).to be_a_kind_of(Integer)
+        expect(vc.to_s.length).to eq(4)
+      end
+    end
+  end
+
   describe '#body' do
     context 'when method is called' do
       it 'should return body merged with relying party' do

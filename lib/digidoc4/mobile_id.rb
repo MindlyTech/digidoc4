@@ -37,6 +37,15 @@ module DigiDoc4
       "#{@base_url}/signature"
     end
 
+    ##
+    # Gets the vertification code for the request
+    def verification_code
+      raise ArgumentError, 'Hash is not set' if @hash.nil?
+
+      binary = @hash.unpack1('B*').split //
+      [*binary.first(5), *binary.last(7)].join.to_i(2)
+    end
+
     def body
       lang = case @phone[0, 4]
              when '+372'

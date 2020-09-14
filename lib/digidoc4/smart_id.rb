@@ -38,6 +38,15 @@ module DigiDoc4
     end
 
     ##
+    # Gets the vertification code for the request
+    def verification_code
+      raise ArgumentError, 'Hash is not set' if @hash.nil?
+
+      binary = SecureRandom.hex(32).unpack1('B*').split //
+      [*binary.last(16)].join.to_i(2).to_s.split(//).last(4).join.to_i
+    end
+
+    ##
     # Generates the smart id sign in body that is used in the post request
     def body
       get_hash.merge get_relying_party
