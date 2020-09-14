@@ -60,19 +60,58 @@ RSpec.describe DigiDoc4::MobileID do
   end
 
   describe '#body' do
-    context 'should return body merged with relying party info even if hash is not set' do
-      it do
+    context 'when method is called' do
+      it 'should return body merged with relying party' do
         expect(valid_mobile_id.body.keys)
           .to include(:nationalIdentityNumber, :phoneNumber, :language, :relyingPartyUUID, :relyingPartyName)
       end
+
+      it 'should return body with correct hash' do
+        expect(valid_mobile_id.body).to include(relying_hash.merge(hash))
+      end
+
+      it 'should have correct language dependent on phone number' do
+        expect(valid_mobile_id.body[:language]).to eq('EST')
+      end
+    end
+  end
+
+  describe '#authenticate_url' do
+    context 'when method is called' do
+      it 'should return a valid url' do
+        expect(valid_mobile_id.authenticate_url).to eq('TestBaseURL/authentication')
+      end
+    end
+  end
+
+  describe '#status_url' do
+    context 'when method is called with a type' do
+      it 'should return a valid url' do
+        expect(valid_mobile_id.status_url('TestID', 'signature'))
+          .to eq('TestBaseURL/session/signature/TestID?timeoutMs=5000')
+      end
     end
 
-    context 'should have correct language dependent on phone number' do
-      it { expect(valid_mobile_id.body[:language]).to eq('EST') }
+    context 'when method is called with an incorrect type' do
+      it do
+        expect { valid_mobile_id.status_url('TestID', 'some_stuff') }
+          .to raise_error(ArgumentError, 'Incorrect type for status!')
+      end
     end
 
-    context 'should return body with correct hash' do
-      it { expect(valid_mobile_id.body).to include(relying_hash.merge(hash)) }
+    context 'when method is called without a type' do
+      it do
+        expect { valid_mobile_id.status_url('TestID', nil) }
+          .to raise_error(ArgumentError, 'Incorrect type for status!')
+      end
+    end
+  end
+
+  describe '#sign_url' do
+    context 'when method is called' do
+      it 'should return a valid url' do
+        expect(valid_mobile_id.sign_url).to eq('TestBaseURL/signature')
+      end
     end
   end
 

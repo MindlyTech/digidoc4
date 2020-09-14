@@ -28,6 +28,8 @@ module DigiDoc4
     end
 
     def status_url(session_id, type)
+      raise ArgumentError, 'Incorrect type for status!' unless %w[authentication signature].include? type
+
       "#{@base_url}/session/#{type}/#{session_id}?timeoutMs=5000"
     end
 
