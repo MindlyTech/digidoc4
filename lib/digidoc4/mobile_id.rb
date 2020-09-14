@@ -2,15 +2,19 @@
 
 module DigiDoc4
 
-  class MobileID < DigiDoc
+  ##
+  # This is the class for interacting with Mobile-ID REST API service
+  class MobileID < DigiDoc4::DigiDoc
 
     attr_reader :phone
 
-    @base_url = ENV['']
-    @required_vars = %i[phone]
-
     def initialize(input)
-      raise ArgumentError unless @required_vars.all? { |param| input.key?(param) }
+      required_vars = %i[phone]
+      missing_vars = []
+      required_vars.each { |p| missing_vars << p unless input.key?(p) }
+      unless missing_vars.empty?
+        raise ArgumentError, "Missing input variable(s) for Mobile-ID: #{missing_vars.join(', ')}"
+      end
 
       super input
     end
@@ -32,35 +36,40 @@ module DigiDoc4
     end
 
     def body
+      lang = case @phone[0, 4]
+             when '+372'
+               'EST'
+             when '+371'
+               'LAV'
+             when '+370'
+               'LIT'
+             else
+               'ENG'
+             end
+
       {
-        id_code: @id_code,
-        phone: @phone,
-        language: case @phone[0, 4]
-                  when '+372'
-                    'EST'
-                  when '+371'
-                    'LAV'
-                  when '+370'
-                    'LIT'
-                  else
-                    'ENG'
-                  end
-      }.merge **relying_party, **hash
+        nationalIdentityNumber: @identity_code,
+        phoneNumber: @phone,
+        language: lang
+      }.merge(**relying_party, **hash)
     end
 
-    def get_cert
+    def digidoc_cert
       res = HTTParty.post(
-          certificate_url,
-          body: body,
-          headers: { 'Content-Type' => 'application/json' }
+        certificate_url,
+        body: body,
+        headers: { 'Content-Type' => 'application/json' }
       )
 
-      check_for_errors(res)
+      check_for_error(res)
 
       response = JSON.parse(res.body)
-      raise ArgumentError.new "No certificate for the user was found!" unless response[:result] == "OK"
+      if response['result'] != 'OK'
+        raise DigiDoc4::DigiDoc::ValidationError.new(hash: 'No certificate for the user was found!')
+      end
 
-      response[:cert]
+      @cert = response['cert']
+      response
     end
 
   end
