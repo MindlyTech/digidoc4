@@ -76,7 +76,7 @@ RSpec.describe DigiDoc4::DigiDoc do
     context 'when request is done' do
       it do
         allow(HTTParty).to receive(:post).and_return(response)
-        allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:url)
+        allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:authenticate_url)
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:body)
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:check_for_error).with(response).and_return(nil)
 
