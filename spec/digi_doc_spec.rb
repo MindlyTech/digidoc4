@@ -5,9 +5,6 @@
 RSpec.describe DigiDoc4::DigiDoc do
   let(:input) do
     {
-      relying_party_uuid: 'TestUUID',
-      relying_party_name: 'TestName',
-      base_url: 'TestBaseURL',
       identity_code: 'TestIdentityCode'
     }
   end

@@ -3,9 +3,6 @@
 RSpec.describe DigiDoc4::MobileID do
   let(:input) do
     {
-      relying_party_uuid: 'TestUUID',
-      relying_party_name: 'TestName',
-      base_url: 'TestBaseURL',
       identity_code: 'TestIdentityCode',
       phone: '+37255555555'
     }
@@ -47,11 +44,6 @@ RSpec.describe DigiDoc4::MobileID do
         invalid_input = { test: 'invalid', test2: 'phone' }
         expect { DigiDoc4::MobileID.new(invalid_input) }.to raise_error(ArgumentError)
       end
-
-      it do
-        invalid_input = { phone: '+3725555555', identity_code: '3541551562' }
-        expect { DigiDoc4::MobileID.new(invalid_input) }.to raise_error(ArgumentError)
-      end
     end
 
     context 'when initializing with correct input' do
@@ -79,7 +71,7 @@ RSpec.describe DigiDoc4::MobileID do
   describe '#authenticate_url' do
     context 'when method is called' do
       it 'should return a valid url' do
-        expect(valid_mobile_id.authenticate_url).to eq('TestBaseURL/authentication')
+        expect(valid_mobile_id.authenticate_url).to eq('MobileIDTestURL/authentication')
       end
     end
   end
@@ -88,7 +80,7 @@ RSpec.describe DigiDoc4::MobileID do
     context 'when method is called with a type' do
       it 'should return a valid url' do
         expect(valid_mobile_id.status_url('TestID', 'signature'))
-          .to eq('TestBaseURL/session/signature/TestID?timeoutMs=5000')
+          .to eq('MobileIDTestURL/session/signature/TestID?timeoutMs=5000')
       end
     end
 
@@ -110,7 +102,7 @@ RSpec.describe DigiDoc4::MobileID do
   describe '#sign_url' do
     context 'when method is called' do
       it 'should return a valid url' do
-        expect(valid_mobile_id.sign_url).to eq('TestBaseURL/signature')
+        expect(valid_mobile_id.sign_url).to eq('MobileIDTestURL/signature')
       end
     end
   end

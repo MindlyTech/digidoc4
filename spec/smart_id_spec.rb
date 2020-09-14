@@ -2,12 +2,9 @@
 
 # rubocop:disable Metrics/BlockLength
 
-RSpec.describe DigiDoc4::DigiDoc do
+RSpec.describe DigiDoc4::SmartID do
   let(:input) do
     {
-      relying_party_uuid: 'TestUUID',
-      relying_party_name: 'TestName',
-      base_url: 'TestBaseURL',
       identity_code: 'TestIdentityCode',
       country_code: 'ee'
     }
@@ -15,9 +12,6 @@ RSpec.describe DigiDoc4::DigiDoc do
 
   let(:false_input) do
     {
-      relying_party_uuid: 'TestUUID',
-      relying_party_name: 'TestName',
-      base_url: 'TestBaseURL',
       identity_code: 'TestIdentityCode'
     }
   end
@@ -75,7 +69,7 @@ RSpec.describe DigiDoc4::DigiDoc do
   describe '#authenticate_url' do
     context 'When method gets called' do
       it 'should return a valid url' do
-        expect(valid_smart_id.authenticate_url).to eq('TestBaseURL/authentication/pno/ee/TestIdentityCode')
+        expect(valid_smart_id.authenticate_url).to eq('SmartIDTestURL/authentication/pno/ee/TestIdentityCode')
       end
     end
   end
@@ -83,7 +77,7 @@ RSpec.describe DigiDoc4::DigiDoc do
   describe '#status_url' do
     context 'When method gets called' do
       it 'should return a valid url' do
-        expect(valid_smart_id.status_url('TestID', nil)).to eq('TestBaseURL/session/TestID?timeoutMs=5000')
+        expect(valid_smart_id.status_url('TestID', nil)).to eq('SmartIDTestURL/session/TestID?timeoutMs=5000')
       end
     end
   end
@@ -92,7 +86,7 @@ RSpec.describe DigiDoc4::DigiDoc do
     context 'When method gets called' do
       it 'should return a valid url' do
         valid_smart_id.instance_variable_set(:@document_number, 'TestNumber')
-        expect(valid_smart_id.sign_url).to eq('TestBaseURL/signature/document/TestNumber')
+        expect(valid_smart_id.sign_url).to eq('SmartIDTestURL/signature/document/TestNumber')
       end
     end
   end

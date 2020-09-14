@@ -11,8 +11,7 @@ module DigiDoc4
     def initialize(input)
       super
 
-      rv = %w[@country_code]
-      rv -= instance_variables.map(&:to_s)
+      rv = %w[@country_code] - instance_variables.map(&:to_s)
 
       raise ArgumentError, "Missing input variable(s): [\"#{rv.join('", "')}\"]" unless rv.empty?
     end

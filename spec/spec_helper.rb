@@ -12,3 +12,10 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+DigiDoc4.configure do |conf|
+  conf.relying_party_uuid = 'TestUUID'
+  conf.relying_party_name = 'TestName'
+  conf.smart_id_base_url  = 'SmartIDTestURL'
+  conf.mobile_id_base_url = 'MobileIDTestURL'
+end

@@ -16,12 +16,23 @@ module DigiDoc4
     ##
     # Initializes the DigiDoc class
     #   legal Inputs:
-    #     relying_party_uuid  - SK provided uuid
-    #     relying_party_name  - SK proviced name
-    #     base_url            - Base url for the service
     #     identity_code       - ID code for the user
     def initialize(input)
+      ##
+      # Adds configuration params to input
+      input.merge!(DigiDoc4.configuration.instance_variables_hash)
+
+      ##
+      # Adds input params to instance variabless
       input.each { |k, v| instance_variable_set("@#{k}", v) }
+
+      ##
+      # Sets base_url based on class instance
+      @base_url = case self.class.name
+                  when 'DigiDoc4::MobileID' then @mobile_id_base_url
+                  when 'DigiDoc4::SmartID'  then @smart_id_base_url
+                  end
+      puts @base_url
 
       rv = %w[@relying_party_uuid @relying_party_name @base_url @identity_code]
       rv -= instance_variables.map(&:to_s)
