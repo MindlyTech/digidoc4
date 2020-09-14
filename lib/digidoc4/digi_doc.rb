@@ -32,7 +32,6 @@ module DigiDoc4
                   when 'DigiDoc4::MobileID' then @mobile_id_base_url
                   when 'DigiDoc4::SmartID'  then @smart_id_base_url
                   end
-      puts @base_url
 
       rv = %w[@relying_party_uuid @relying_party_name @base_url @identity_code]
       rv -= instance_variables.map(&:to_s)
@@ -76,7 +75,7 @@ module DigiDoc4
     ##
     # Use this method to get cert
     def cert
-      @cert || get_cert
+      @cert || digidoc_cert
     end
 
     ##
@@ -105,7 +104,7 @@ module DigiDoc4
       url = status_url(session_id, type)
       res = HTTParty.get(url)
 
-      res = HTTParty.get(url) while JSON.parse(res.body)[:state] == 'RUNNING'
+      res = HTTParty.get(url) while JSON.parse(res.body)['state'] == 'RUNNING'
 
       check_for_error(res)
 
