@@ -9,7 +9,7 @@ TODO: Delete this and the text above, and describe your gem
 Add this line to your application's Gemfile:
 
 ```ruby
-  gem 'digidoc4', git: 'https://git.mindly.dev/plusplus/digidoc4', branch: 'master'
+  gem 'digidoc4', git: 'git@git.mindly.dev:plusplus/digidoc4.git', branch: 'master'
 ```
 
 And then execute:
