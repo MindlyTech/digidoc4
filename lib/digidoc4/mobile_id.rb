@@ -4,7 +4,7 @@ module DigiDoc4
 
   ##
   # This is the class for interacting with Mobile-ID REST API service
-  class MobileID < DigiDoc4::DigiDoc
+  class MobileID < DigiDoc
 
     attr_reader :phone
 
