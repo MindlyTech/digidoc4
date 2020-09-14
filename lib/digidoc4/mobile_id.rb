@@ -63,7 +63,5 @@ module DigiDoc4
       response[:cert]
     end
 
-    end
-
   end
 end
