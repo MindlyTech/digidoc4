@@ -84,13 +84,17 @@ RSpec.describe DigiDoc4::DigiDoc do
 
   describe '#cert' do
     context 'When @cert is set' do
-      it { expect(DigiDoc4::DigiDoc.new(input.merge({ cert: 'TestCert' })).cert).to eq('TestCert') }
+      it do
+        expect_any_instance_of(DigiDoc4::DigiDoc).not_to receive(:digidoc_cert)
+        expect(DigiDoc4::DigiDoc.new(input.merge({ cert: 'TestCert' })).cert).to eq('TestCert')
+      end
     end
 
     context 'When @cert is not set' do
       it do
-        allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:get_cert).and_return('TestCert')
-        expect(valid_digidoc.cert).to eq('TestCert')
+        allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:digidoc_cert).and_return(nil)
+        expect_any_instance_of(DigiDoc4::DigiDoc).to receive(:digidoc_cert)
+        valid_digidoc.cert
       end
     end
   end

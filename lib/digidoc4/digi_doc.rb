@@ -75,7 +75,8 @@ module DigiDoc4
     ##
     # Use this method to get cert
     def cert
-      @cert || digidoc_cert
+      digidoc_cert if @cert.nil?
+      @cert
     end
 
     ##

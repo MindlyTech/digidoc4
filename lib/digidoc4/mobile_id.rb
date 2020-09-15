@@ -43,7 +43,7 @@ module DigiDoc4
       raise ArgumentError, 'Hash is not set' if @hash.nil?
 
       binary = @hash.unpack1('B*').split //
-      [*binary.first(5), *binary.last(7)].join.to_i(2)
+      [*binary.first(6), *binary.last(7)].join.to_i(2)
     end
 
     def body
@@ -57,7 +57,6 @@ module DigiDoc4
              else
                'ENG'
              end
-
       {
         nationalIdentityNumber: @identity_code,
         phoneNumber: @phone,
