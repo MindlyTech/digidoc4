@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 module DigiDoc4
-
   ##
   # This is the class for interacting with Mobile-ID REST API service
   class MobileID < DigiDoc
-
     attr_reader :phone
 
     def initialize(input)
@@ -30,7 +28,7 @@ module DigiDoc4
     def status_url(session_id, type)
       raise ArgumentError, 'Incorrect type for status!' unless %w[authentication signature].include? type
 
-      "#{@base_url}/session/#{type}/#{session_id}?timeoutMs=5000"
+      "#{@base_url}/#{type}/session/#{session_id}?timeoutMs=5000"
     end
 
     def sign_url
@@ -67,7 +65,7 @@ module DigiDoc4
     def digidoc_cert
       res = HTTParty.post(
         certificate_url,
-        body: body,
+        body: body.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
 
@@ -81,6 +79,5 @@ module DigiDoc4
       @cert = response['cert']
       response
     end
-
   end
 end

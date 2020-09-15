@@ -57,7 +57,7 @@ module DigiDoc4
     def digidoc_cert
       res = HTTParty.post(
         "#{@base_url}certificatechoice/pno/#{@country_code}/#{@identity_code}",
-        body: relying_party,
+        body: relying_party.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
 

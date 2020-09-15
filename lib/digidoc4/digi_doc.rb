@@ -7,6 +7,7 @@ module DigiDoc4
     ##
     # This error gets called when request fails
     class ValidationError < StandardError
+      attr_accessor :error, :time, :traceId, :path
       def initialize(input)
         super
         input.each { |k, v| instance_variable_set("@#{k}", v) }
@@ -63,7 +64,7 @@ module DigiDoc4
     def authenticate
       res = HTTParty.post(
         authenticate_url,
-        body: body,
+        body: body.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
 
@@ -84,7 +85,7 @@ module DigiDoc4
     def sign
       res = HTTParty.post(
         sign_url,
-        body: body,
+        body: body.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
 
@@ -117,7 +118,8 @@ module DigiDoc4
     ##
     # Use it to check if http response is error
     def check_for_error(res)
-      raise ValidationError.new(JSON.parse(res.body)), "Authentication failed with status code \"#{res.code}\"" if res.code != 200
+      body = JSON.parse(res.body)
+      raise ValidationError.new(body), "Authentication failed\n    status code: \"#{res.code}\"\n    message: \"#{body['error']}\"" if res.code != 200
     end
   end
 end

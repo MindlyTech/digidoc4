@@ -11,9 +11,10 @@ RSpec.describe DigiDoc4::DigiDoc do
 
   let(:valid_digidoc) { DigiDoc4::DigiDoc.new(input) }
 
-  let(:response_body) { '{ "sessionId": "de305d54-75b4-431b-adb2-eb6b9e546015" }' }
-  let(:response)      { instance_double(HTTParty::Response, code: 200, body: response_body) }
-  let(:err_response)  { instance_double(HTTParty::Response, code: 500, body: response_body) }
+  let(:response_body)     { '{ "sessionId": "de305d54-75b4-431b-adb2-eb6b9e546015" }' }
+  let(:response)          { instance_double(HTTParty::Response, code: 200, body: response_body) }
+  let(:err_response_body) { '{ "error": "relyingPartyUUID must not be null", "time": "2019-07-23T11:27:49", "traceId": "4a295f2786d6dc89" }' }
+  let(:err_response)      { instance_double(HTTParty::Response, code: 500, body: err_response_body) }
 
   describe '::initialize' do
     context 'valid input should return instance of DigiDoc' do
@@ -107,7 +108,7 @@ RSpec.describe DigiDoc4::DigiDoc do
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:body)
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:check_for_error).with(response).and_return(nil)
 
-        expect(valid_digidoc.sign).to eq({ "sessionId" => "de305d54-75b4-431b-adb2-eb6b9e546015" })
+        expect(valid_digidoc.sign).to eq({ 'sessionId' => 'de305d54-75b4-431b-adb2-eb6b9e546015' })
       end
     end
   end
@@ -123,7 +124,7 @@ RSpec.describe DigiDoc4::DigiDoc do
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:status_url)
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:check_for_error).with(response).and_return(nil)
 
-        expect(valid_digidoc.get_status('TestSession', 'authentication')).to eq({ "sessionId" => "de305d54-75b4-431b-adb2-eb6b9e546015" })
+        expect(valid_digidoc.get_status('TestSession', 'authentication')).to eq({ 'sessionId' => 'de305d54-75b4-431b-adb2-eb6b9e546015' })
       end
     end
   end

@@ -97,7 +97,7 @@ RSpec.describe DigiDoc4::MobileID do
     context 'when method is called with a type' do
       it 'should return a valid url' do
         expect(valid_mobile_id.status_url('TestID', 'signature'))
-          .to eq('https://tsp.demo.sk.ee/mid-api/session/signature/TestID?timeoutMs=5000')
+          .to eq('https://tsp.demo.sk.ee/mid-api/signature/session/TestID?timeoutMs=5000')
       end
     end
 
