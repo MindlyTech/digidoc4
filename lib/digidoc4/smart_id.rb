@@ -49,14 +49,14 @@ module DigiDoc4
     ##
     # Generates the smart id sign in body that is used in the post request
     def body
-      get_hash.merge relying_party
+      hash.merge relying_party
     end
 
     ##
     # Returns the certificate for that client
     def digidoc_cert
       res = HTTParty.post(
-        "#{@base_url}certificatechoice/pno/#{@country_code}/#{@identity_code}",
+        "#{@base_url}/certificatechoice/pno/#{@country_code}/#{@identity_code}",
         body: relying_party.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
@@ -64,9 +64,9 @@ module DigiDoc4
       check_for_error(res)
 
       res = JSON.parse(res.body)
-      res = get_status(res['sessionId'], 'authentication')
+      res = get_status(res['sessionID'], 'authentication')
 
-      @document_number = res['documentNumber']
+      @document_number = res['result']['documentNumber']
       @cert = res['cert']['value']
       return res
     end

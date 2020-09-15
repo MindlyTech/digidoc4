@@ -31,7 +31,10 @@ RSpec.describe DigiDoc4::SmartID do
   end
 
   let(:get_status_res) do
-    '{ "documentNumber": "TestNumber",
+    '{
+      "result": {
+        "documentNumber": "TestNumber"
+      },
       "cert": {
         "value": "certValue"
       }
@@ -40,12 +43,12 @@ RSpec.describe DigiDoc4::SmartID do
 
   let(:valid_smart_id) { DigiDoc4::SmartID.new(input) }
 
-  let(:response_body) { '{ "sessionId": "de305d54-75b4-431b-adb2-eb6b9e546015" }' }
+  let(:response_body) { '{ "sessionID": "de305d54-75b4-431b-adb2-eb6b9e546015" }' }
   let(:response)      { instance_double(HTTParty::Response, code: 200, body: response_body) }
   let(:err_response)  { instance_double(HTTParty::Response, code: 500, body: response_body) }
 
   before(:each) do
-    allow_any_instance_of(DigiDoc4::SmartID).to receive(:get_hash).and_return(hash)
+    allow_any_instance_of(DigiDoc4::SmartID).to receive(:hash).and_return(hash)
     allow_any_instance_of(DigiDoc4::SmartID).to receive(:relying_party).and_return(relying_hash)
     allow_any_instance_of(DigiDoc4::SmartID).to receive(:check_for_error).and_return(nil)
     allow_any_instance_of(DigiDoc4::SmartID).to receive(:get_cert).and_return(nil)
@@ -110,7 +113,7 @@ RSpec.describe DigiDoc4::SmartID do
 
   describe '#body' do
     context 'when called' do
-      it 'should merge together #get_hahs and  #relying_party' do
+      it 'should merge together #get_hash and  #relying_party' do
         expect(valid_smart_id.body).to eq(relying_hash.merge(hash))
       end
     end
@@ -123,7 +126,7 @@ RSpec.describe DigiDoc4::SmartID do
         expect(valid_smart_id.instance_variable_get(:@cert)).to eq('certValue')
         expect(valid_smart_id.instance_variable_get(:@document_number)).to eq('TestNumber')
 
-        expect(res).to eq({ 'documentNumber' => 'TestNumber', 'cert' => { 'value' => 'certValue' } })
+        expect(res).to eq({ 'result' => { 'documentNumber' => 'TestNumber' }, 'cert' => { 'value' => 'certValue' } })
       end
     end
   end
