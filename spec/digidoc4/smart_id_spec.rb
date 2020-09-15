@@ -18,8 +18,8 @@ RSpec.describe DigiDoc4::SmartID do
 
   let(:relying_hash) do
     {
-      relying_party_uuid: 'TestUUID',
-      relying_party_name: 'TestName'
+      relying_party_uuid: '00000000-0000-0000-0000-000000000000',
+      relying_party_name: 'DEMO'
     }
   end
 
@@ -69,7 +69,7 @@ RSpec.describe DigiDoc4::SmartID do
   describe '#authenticate_url' do
     context 'When method gets called' do
       it 'should return a valid url' do
-        expect(valid_smart_id.authenticate_url).to eq('SmartIDTestURL/authentication/pno/ee/TestIdentityCode')
+        expect(valid_smart_id.authenticate_url).to eq('https://sid.demo.sk.ee/smart-id-rp/v1//authentication/pno/ee/TestIdentityCode')
       end
     end
   end
@@ -77,7 +77,7 @@ RSpec.describe DigiDoc4::SmartID do
   describe '#status_url' do
     context 'When method gets called' do
       it 'should return a valid url' do
-        expect(valid_smart_id.status_url('TestID', nil)).to eq('SmartIDTestURL/session/TestID?timeoutMs=5000')
+        expect(valid_smart_id.status_url('TestID', nil)).to eq('https://sid.demo.sk.ee/smart-id-rp/v1//session/TestID?timeoutMs=5000')
       end
     end
   end
@@ -86,7 +86,7 @@ RSpec.describe DigiDoc4::SmartID do
     context 'When method gets called' do
       it 'should return a valid url' do
         valid_smart_id.instance_variable_set(:@document_number, 'TestNumber')
-        expect(valid_smart_id.sign_url).to eq('SmartIDTestURL/signature/document/TestNumber')
+        expect(valid_smart_id.sign_url).to eq('https://sid.demo.sk.ee/smart-id-rp/v1//signature/document/TestNumber')
       end
     end
   end

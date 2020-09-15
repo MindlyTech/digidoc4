@@ -64,7 +64,7 @@ RSpec.describe DigiDoc4::DigiDoc do
       it do
         dd = valid_digidoc
 
-        expect(dd.relying_party).to eq(relyingPartyUUID: 'TestUUID', relyingPartyName: 'TestName')
+        expect(dd.relying_party).to eq(relyingPartyUUID: '00000000-0000-0000-0000-000000000000', relyingPartyName: 'DEMO')
       end
     end
   end

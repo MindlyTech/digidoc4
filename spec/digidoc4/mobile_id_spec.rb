@@ -20,8 +20,8 @@ RSpec.describe DigiDoc4::MobileID do
 
   let(:relying_hash) do
     {
-      relyingPartyUUID: 'TestUUID',
-      relyingPartyName: 'TestName'
+      relyingPartyUUID: '00000000-0000-0000-0000-000000000000',
+      relyingPartyName: 'DEMO'
     }
   end
 
@@ -88,7 +88,7 @@ RSpec.describe DigiDoc4::MobileID do
   describe '#authenticate_url' do
     context 'when method is called' do
       it 'should return a valid url' do
-        expect(valid_mobile_id.authenticate_url).to eq('MobileIDTestURL/authentication')
+        expect(valid_mobile_id.authenticate_url).to eq('https://tsp.demo.sk.ee/mid-api/authentication')
       end
     end
   end
@@ -97,7 +97,7 @@ RSpec.describe DigiDoc4::MobileID do
     context 'when method is called with a type' do
       it 'should return a valid url' do
         expect(valid_mobile_id.status_url('TestID', 'signature'))
-          .to eq('MobileIDTestURL/session/signature/TestID?timeoutMs=5000')
+          .to eq('https://tsp.demo.sk.ee/mid-api/session/signature/TestID?timeoutMs=5000')
       end
     end
 
@@ -119,7 +119,7 @@ RSpec.describe DigiDoc4::MobileID do
   describe '#sign_url' do
     context 'when method is called' do
       it 'should return a valid url' do
-        expect(valid_mobile_id.sign_url).to eq('MobileIDTestURL/signature')
+        expect(valid_mobile_id.sign_url).to eq('https://tsp.demo.sk.ee/mid-api/signature')
       end
     end
   end

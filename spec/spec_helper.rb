@@ -14,8 +14,8 @@ RSpec.configure do |config|
 end
 
 DigiDoc4.configure do |conf|
-  conf.relying_party_uuid = 'TestUUID'
-  conf.relying_party_name = 'TestName'
-  conf.smart_id_base_url  = 'SmartIDTestURL'
-  conf.mobile_id_base_url = 'MobileIDTestURL'
+  conf.relying_party_uuid = '00000000-0000-0000-0000-000000000000'
+  conf.relying_party_name = 'DEMO'
+  conf.smart_id_base_url  = 'https://sid.demo.sk.ee/smart-id-rp/v1/'
+  conf.mobile_id_base_url = 'https://tsp.demo.sk.ee/mid-api'
 end
