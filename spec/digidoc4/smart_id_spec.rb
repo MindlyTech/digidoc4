@@ -46,7 +46,7 @@ RSpec.describe DigiDoc4::SmartID do
 
   before(:each) do
     allow_any_instance_of(DigiDoc4::SmartID).to receive(:get_hash).and_return(hash)
-    allow_any_instance_of(DigiDoc4::SmartID).to receive(:get_relying_party).and_return(relying_hash)
+    allow_any_instance_of(DigiDoc4::SmartID).to receive(:relying_party).and_return(relying_hash)
     allow_any_instance_of(DigiDoc4::SmartID).to receive(:check_for_error).and_return(nil)
     allow_any_instance_of(DigiDoc4::SmartID).to receive(:get_cert).and_return(nil)
     allow_any_instance_of(DigiDoc4::SmartID).to receive(:get_status)
@@ -110,7 +110,7 @@ RSpec.describe DigiDoc4::SmartID do
 
   describe '#body' do
     context 'when called' do
-      it 'should merge together #get_hahs and  #get_relying_party' do
+      it 'should merge together #get_hahs and  #relying_party' do
         expect(valid_smart_id.body).to eq(relying_hash.merge(hash))
       end
     end
