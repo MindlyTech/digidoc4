@@ -74,6 +74,7 @@ RSpec.describe DigiDoc4::DigiDoc do
     context 'when request is done' do
       it do
         allow(HTTParty).to receive(:post).and_return(response)
+        allow(response).to receive(:parsed_response).and_return(JSON.parse(response_body))
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:authenticate_url)
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:body)
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:check_for_error).with(response).and_return(nil)
@@ -104,6 +105,7 @@ RSpec.describe DigiDoc4::DigiDoc do
     context 'when request is done' do
       it do
         allow(HTTParty).to receive(:post).and_return(response)
+        allow(response).to receive(:parsed_response).and_return(JSON.parse(response_body))
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:sign_url)
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:body)
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:check_for_error).with(response).and_return(nil)
@@ -121,6 +123,7 @@ RSpec.describe DigiDoc4::DigiDoc do
     context 'when request is done' do
       it do
         allow(HTTParty).to receive(:get).and_return(response)
+        allow(response).to receive(:parsed_response).and_return(JSON.parse(response_body))
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:status_url)
         allow_any_instance_of(DigiDoc4::DigiDoc).to receive(:check_for_error).with(response).and_return(nil)
 
@@ -131,11 +134,15 @@ RSpec.describe DigiDoc4::DigiDoc do
 
   describe '#check_for_error' do
     context 'When input response is 200' do
-      it { expect(valid_digidoc.send(:check_for_error, response)).to eq(nil) }
+      it do
+        allow(response).to receive(:parsed_response).and_return(JSON.parse(response_body))
+        expect(valid_digidoc.send(:check_for_error, response)).to eq(nil)
+      end
     end
 
     context 'When input response is not 200' do
       it do
+        allow(err_response).to receive(:parsed_response).and_return(JSON.parse(response_body))
         expect { valid_digidoc.send(:check_for_error, err_response) }.to raise_error(DigiDoc4::DigiDoc::ValidationError)
       end
     end

@@ -128,6 +128,8 @@ RSpec.describe DigiDoc4::MobileID do
     context 'when response result is OK' do
       it do
         allow(HTTParty).to receive(:post).and_return(response_ok)
+        allow(response_ok).to receive(:parsed_response).and_return(JSON.parse(response_body_ok))
+
         expect(valid_mobile_id.digidoc_cert).to eq(JSON.parse(response_body_ok))
       end
     end
@@ -135,6 +137,8 @@ RSpec.describe DigiDoc4::MobileID do
     context 'when response result is NOT_FOUND' do
       it do
         allow(HTTParty).to receive(:post).and_return(response_not_found)
+        allow(response_not_found).to receive(:parsed_response).and_return(JSON.parse(response_body_not_found))
+
         expect { valid_mobile_id.digidoc_cert }.to raise_error(DigiDoc4::DigiDoc::ValidationError)
       end
     end

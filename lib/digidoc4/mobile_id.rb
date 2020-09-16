@@ -71,7 +71,7 @@ module DigiDoc4
 
       check_for_error(res)
 
-      response = JSON.parse(res.body)
+      response = res.parsed_response
       if response['result'] != 'OK'
         raise DigiDoc4::DigiDoc::ValidationError.new(hash: 'No certificate for the user was found!')
       end

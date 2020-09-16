@@ -45,7 +45,6 @@ RSpec.describe DigiDoc4::SmartID do
 
   let(:response_body) { '{ "sessionID": "de305d54-75b4-431b-adb2-eb6b9e546015" }' }
   let(:response)      { instance_double(HTTParty::Response, code: 200, body: response_body) }
-  let(:err_response)  { instance_double(HTTParty::Response, code: 500, body: response_body) }
 
   before(:each) do
     allow_any_instance_of(DigiDoc4::SmartID).to receive(:hash).and_return(hash)
@@ -56,7 +55,8 @@ RSpec.describe DigiDoc4::SmartID do
       .with('de305d54-75b4-431b-adb2-eb6b9e546015', 'authentication')
       .and_return(JSON.parse(get_status_res))
 
-    allow(HTTParty).to receive(:post).and_return(instance_double(HTTParty::Response, code: 200, body: response_body))
+    allow(HTTParty).to receive(:post).and_return(response)
+    allow(response).to receive(:parsed_response).and_return(JSON.parse(response_body))
   end
 
   describe '::initialize' do

@@ -70,7 +70,7 @@ module DigiDoc4
 
       check_for_error(res)
 
-      JSON.parse(res.body)
+      res.parsed_response
     end
 
     ##
@@ -91,7 +91,7 @@ module DigiDoc4
 
       check_for_error(res)
 
-      JSON.parse(res.body)
+      res.parsed_response
     end
 
     ##
@@ -106,11 +106,11 @@ module DigiDoc4
       url = status_url(session_id, type)
       res = HTTParty.get(url)
 
-      res = HTTParty.get(url) while JSON.parse(res.body)['state'] == 'RUNNING'
+      res = HTTParty.get(url) while res.parsed_response['state'] == 'RUNNING'
 
       check_for_error(res)
 
-      JSON.parse(res.body)
+      res.parsed_response
     end
 
     private
@@ -118,7 +118,7 @@ module DigiDoc4
     ##
     # Use it to check if http response is error
     def check_for_error(res)
-      body = JSON.parse(res.body)
+      body = res.parsed_response
       raise ValidationError.new(body), "Authentication failed\n    status code: \"#{res.code}\"\n    message: \"#{body['error']}\"" if res.code != 200
     end
   end

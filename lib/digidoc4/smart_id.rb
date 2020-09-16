@@ -42,7 +42,7 @@ module DigiDoc4
     def verification_code
       raise ArgumentError, 'Hash is not set' if @hash.nil?
 
-      binary = SecureRandom.hex(32).unpack1('B*').split //
+      binary = @hash.unpack1('B*').split //
       [*binary.last(16)].join.to_i(2).to_s.split(//).last(4).join.to_i
     end
 
@@ -63,7 +63,7 @@ module DigiDoc4
 
       check_for_error(res)
 
-      res = JSON.parse(res.body)
+      res = res.parsed_response
       res = get_status(res['sessionID'], 'authentication')
 
       @document_number = res['result']['documentNumber']
