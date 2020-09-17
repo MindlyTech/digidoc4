@@ -1,5 +1,5 @@
-RSpec.describe Digidoc4 do
+RSpec.describe DigiDoc4 do
   it "has a version number" do
-    expect(Digidoc4::VERSION).not_to be nil
+    expect(DigiDoc4::VERSION).not_to be nil
   end
 end
