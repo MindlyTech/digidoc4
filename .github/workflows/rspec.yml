@@ -20,4 +20,4 @@ jobs:
           bundle install --retry 3
 
       - name: run rspec
-        run: bundle exec rpsec
+        run: bundle exec rspec
